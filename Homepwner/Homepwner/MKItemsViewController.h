@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MKItemsViewController.h
 //  Homepwner
 //
 //  Created by 穆康 on 2016/10/13.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface MKItemsViewController : UITableViewController
 
 @end
-
