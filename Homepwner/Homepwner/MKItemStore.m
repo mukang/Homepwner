@@ -8,6 +8,7 @@
 
 #import "MKItemStore.h"
 #import "MKItem.h"
+#import "MKImageStore.h"
 
 @interface MKItemStore ()
 
@@ -49,6 +50,7 @@
 }
 
 - (void)removeItem:(MKItem *)item {
+    [[MKImageStore sharedStore] deleteImageForKey:item.itemKey];
     [self.privateItems removeObjectIdenticalTo:item];
 }
 
