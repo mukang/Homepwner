@@ -7,6 +7,7 @@
 //
 
 #import "MKItemsViewController.h"
+#import "MKDetailViewController.h"
 #import "MKItemStore.h"
 #import "MKItem.h"
 
@@ -24,6 +25,13 @@
 //        for (int i=0; i<5; i++) {
 //            [[MKItemStore sharedStore] createItem];
 //        }
+        UINavigationItem *navItem = self.navigationItem;
+        navItem.title = @"Homepwner";
+        
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem:)];
+        navItem.rightBarButtonItem = bbi;
+        
+        navItem.leftBarButtonItem = self.editButtonItem;
     }
     return self;
 }
@@ -35,6 +43,12 @@
     
     UIView *header = self.headerView;
     self.tableView.tableHeaderView = header;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - dataSource
@@ -64,6 +78,16 @@
     [[MKItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    MKDetailViewController *detailVC = [[MKDetailViewController alloc] init];
+    
+    NSArray *items = [MKItemStore sharedStore].allItems;
+    MKItem *selectedItem = items[indexPath.row];
+    detailVC.item = selectedItem;
+    
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
+
 #pragma mark - actions
 
 - (IBAction)addNewItem:(id)sender {
@@ -73,23 +97,23 @@
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (IBAction)toggleEditingMode:(id)sender {
-    if (self.isEditing) {
-        [sender setTitle:@"Edit" forState:UIControlStateNormal];
-        [self setEditing:NO animated:YES];
-    } else {
-        [sender setTitle:@"Done" forState:UIControlStateNormal];
-        [self setEditing:YES animated:YES];
-    }
-}
+//- (IBAction)toggleEditingMode:(id)sender {
+//    if (self.isEditing) {
+//        [sender setTitle:@"Edit" forState:UIControlStateNormal];
+//        [self setEditing:NO animated:YES];
+//    } else {
+//        [sender setTitle:@"Done" forState:UIControlStateNormal];
+//        [self setEditing:YES animated:YES];
+//    }
+//}
 
 #pragma mark - lazy
 
-- (UIView *)headerView {
-    if (!_headerView) {
-        [[NSBundle mainBundle] loadNibNamed:@"HeaderView" owner:self options:nil];
-    }
-    return _headerView;
-}
+//- (UIView *)headerView {
+//    if (!_headerView) {
+//        [[NSBundle mainBundle] loadNibNamed:@"HeaderView" owner:self options:nil];
+//    }
+//    return _headerView;
+//}
 
 @end
